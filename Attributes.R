@@ -24,8 +24,14 @@ addWorkWayAttribute = function(trainset) {
             trainset[i, 'onwaytowork'] <- 1
         }
         else
+        {
             trainset[i, 'onwaytowork'] <- 0
         }
-
+    }
     return trainset
+}
+
+removeOutliers = function(trainset) {
+    cleanedSet <- trainset[which(abs(trainset$count - mean(trainset$count)) < 3*sd(train$count)),]
+    return cleanedSet
 }
