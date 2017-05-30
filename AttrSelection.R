@@ -26,6 +26,20 @@ regsubsetAnalysis = function(train){
   plot(out)
 }
 
+## Stepwise Regression
+stepwiseRegression = function(train)
+{
+  model <- lm(count~ ., family = binomial, data = train)
+  summary(model)
+  step <- stepAIC(model, trace = FALSE)
+  step$anova
+  
+  #forward <- stepAIC(model, direction = 'forward', trace = FALSE)
+  #forward$anova
+  #backward <- stepAIC(model, direction = 'backward', trace = FALSE)
+  #backward$anova
+}
+
 ## LVQ analysis
 #LVQImportanceAnalysis = function(train){
 #  train$count <- as.factor(train$count)
