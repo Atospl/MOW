@@ -19,6 +19,7 @@ correlationAnalysis = function(train){
 }
 
 ## Regsubset
+## http://www2.hawaii.edu/~taylor/z632/Rbestsubsets.pdf
 regsubsetAnalysis = function(train){
   out <- regsubsets(count ~ ., data=train, nvmax = 11)
   summary(out)
