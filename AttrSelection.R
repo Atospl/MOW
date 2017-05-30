@@ -1,4 +1,4 @@
-library(leaps)
+#library(leaps)
 library(caret)
 library(mlbench)
 library(doMC)
@@ -13,8 +13,9 @@ correlationAnalysis = function(train){
   corMatrix <- cor(train[,c("season", "holiday", "workingday", "weather", "temp", "atemp", "humidity",
                             "windspeed", "weekdays", "hours", "onwaytowork")])
   print(corMatrix)
-  highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.5)
+  highlyCorrelated <- findCorrelation(corMatrix, cutoff=0.9, names=TRUE)
   print(highlyCorrelated)
+  return(corMatrix)
 }
 
 ## Regsubset
@@ -25,14 +26,14 @@ regsubsetAnalysis = function(train){
 }
 
 ## LVQ analysis
-LVQImportanceAnalysis = function(train){
-  train$count <- as.factor(train$count)
-  control <- trainControl(method="repeatedcv")#, number=14, repeats=30)
-  model <- train(count~., data=train, method="lvq", preProcess="scale", trControl=control)
-  importance <- varImp(model, scale=FALSE)
-  print(importance)
-  plot(importance)
-}
+#LVQImportanceAnalysis = function(train){
+#  train$count <- as.factor(train$count)
+#  control <- trainControl(method="repeatedcv")#, number=14, repeats=30)
+#  model <- train(count~., data=train, method="lvq", preProcess="scale", trControl=control)
+#  importance <- varImp(model, scale=FALSE)
+#  print(importance)
+#  plot(importance)
+#}
 
 ## Random Forest analysis
 ## TODO

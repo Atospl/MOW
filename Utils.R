@@ -1,5 +1,8 @@
 ## File contains commands useful in the process of data mining of trainset
 
+## load the dataset
+train = read.csv("train.csv", header = TRUE, stringsAsFactors = FALSE)   
+
 ## get working days
 workingTrain <- train[which(train$workingday == 1)]
 
