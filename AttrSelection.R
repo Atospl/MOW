@@ -20,7 +20,7 @@ correlationAnalysis = function(train){
 
 ## Regsubset
 regsubsetAnalysis = function(train){
-  out <- regsubsets(count ~ season + holiday + workingday, data=train)
+  out <- regsubsets(count ~ ., data=train)
   summary(out)
   plot(out)
 }
