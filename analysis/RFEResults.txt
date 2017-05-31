@@ -1,0 +1,25 @@
+Recursive feature selection
+
+Outer resampling method: Cross-Validated (10 fold) 
+
+Resampling performance over subset size:
+
+ Variables   RMSE Rsquared RMSESD RsquaredSD Selected
+         1 117.60   0.5026  2.241    0.01616         
+         2 113.75   0.5347  1.857    0.01677         
+         3 118.55   0.5245  2.069    0.01737         
+         4 120.60   0.5239  2.941    0.02812         
+         5 117.93   0.5611  3.270    0.03061         
+         6  78.45   0.7841  7.646    0.03977         
+         7  74.83   0.8092  6.145    0.02730         
+         8  71.11   0.8299  3.472    0.02069         
+         9  63.11   0.8590  2.340    0.01268        *
+        10  63.31   0.8596  2.067    0.01073         
+        11  64.63   0.8549  1.914    0.01005         
+
+The top 5 variables (out of 9):
+   hours, humidity, onwaytowork, weather, weekdays
+
+> predictors(res)
+[1] "hours"       "humidity"    "onwaytowork" "weather"     "weekdays"    "season"      "workingday"  "temp"       
+[9] "atemp"    
