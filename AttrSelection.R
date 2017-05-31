@@ -2,8 +2,9 @@
 library(caret)
 library(mlbench)
 library(doMC)
+library(randomForest)
 
-## register cores for multithreading
+# register cores for multithreading
 registerDoMC(cores = 6)
 ## to ensure results are repeatable
 set.seed(7)
@@ -16,7 +17,9 @@ correlationAnalysis = function(train){
   highlyCorrelated <- findCorrelation(corMatrix, cutoff=0.9, names=TRUE)
   print(highlyCorrelated)
   return(corMatrix)
+  ## turns out only ATemp and Temp are highly correlated
 }
+
 
 ## Regsubset
 regsubsetAnalysis = function(train){
@@ -26,20 +29,24 @@ regsubsetAnalysis = function(train){
 }
 
 ## LVQ analysis
-#LVQImportanceAnalysis = function(train){
-#  train$count <- as.factor(train$count)
-#  control <- trainControl(method="repeatedcv")#, number=14, repeats=30)
-#  model <- train(count~., data=train, method="lvq", preProcess="scale", trControl=control)
-#  importance <- varImp(model, scale=FALSE)
-#  print(importance)
-#  plot(importance)
-#}
+LVQImportanceAnalysis = function(train){
+  train$count <- as.factor(train$count)
+  control <- trainControl(method="repeatedcv")#, number=14, repeats=30)
+  model <- train(count~., data=train, method="lvq")
+  importance <- varImp(model, scale=FALSE)
+  print(importance)
+  plot(importance)
+}
 
 ## Random Forest analysis
 ## TODO
 randomForestAnalysis = function(train){
   control <- rfeControl(functions=rfFuncs, method="cv", number=10)
   results <- rfe(train[,c("season", "holiday", "workingday", "weather", "temp", "atemp", "humidity",
-                          "windspeed", "weekdays", "hours", "onwaytowork")], PimaIndiansDiabetes$count, sizes=c(1:8), rfeControl=control)
+                          "windspeed", "weekdays", "hours", "onwaytowork")], 
+                 train$count, 
+                 c(1:11), 
+                 rfeControl=control)
+  return(results)
 }
 

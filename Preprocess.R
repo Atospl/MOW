@@ -52,7 +52,7 @@ prepareDataset = function(trainset) {
   trainset <- removeOutliers(trainset)
   trainset <- subset(trainset, 
                            select=c('onwaytowork', 'hours', 'weekdays', 
-                                    'count', 'registered', 'casual', 'windspeed', 
+                                    'count', 'windspeed', 
                                     'humidity', 'atemp', 'temp', 'weather', 
                                     'workingday', 'holiday', 'season'))
   return(trainset)
