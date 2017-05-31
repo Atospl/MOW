@@ -22,10 +22,25 @@ correlationAnalysis = function(train){
 
 
 ## Regsubset
+## http://www2.hawaii.edu/~taylor/z632/Rbestsubsets.pdf
 regsubsetAnalysis = function(train){
-  out <- regsubsets(count ~ season + holiday + workingday, data=train)
+  out <- regsubsets(count ~ ., data=train, nvmax = 11)
   summary(out)
   plot(out)
+}
+
+## Stepwise Regression
+stepwiseRegression = function(train)
+{
+  model <- lm(count~ ., family = binomial, data = train)
+  summary(model)
+  step <- stepAIC(model, trace = FALSE)
+  step$anova
+  
+  #forward <- stepAIC(model, direction = 'forward', trace = FALSE)
+  #forward$anova
+  #backward <- stepAIC(model, direction = 'backward', trace = FALSE)
+  #backward$anova
 }
 
 ## LVQ analysis
