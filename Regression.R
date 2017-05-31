@@ -10,7 +10,7 @@ linearReg = function(trainset, fam = binomial){
 
 #local regression - wywala sie dla niektorych parametrow - np. holiday: NA/NaN/Inf in foreign function call (arg 2) 
 #localRegression(count ~ humidity + hours + atemp, pTrain) - działa
-localReg = function(formula, trainset, sp, deg)
+localReg = function(formula, trainset, sp=0.75, deg=2)
 {
   model <- loess(formula, trainset, degree = deg, span = sp)
   return(model)
@@ -27,7 +27,7 @@ robustReg = function(trainset, fam = binomial)
 }
 
 #drzewo regresji
-regTree = function (trainset, cp, meth = "anova")
+regTree = function (trainset, cp=0.04, meth = "anova")
 {
   model <- rpart(count ~ ., method = meth, data = trainset)
   model <- prune(model, cp)
