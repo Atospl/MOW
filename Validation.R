@@ -1,27 +1,54 @@
 source('Regression.R')
+library('Metrics')
 
 ## Function for performing cross-validation
 crossValidate = function(trainset, k){
   set.seed(1)
-  folds=sample(rep(1:k, length=nrow(trainProcessed)))
+  folds=sample(rep(1:k, length=nrow(trainset)))
 
   # build error frame
   error.iterations = c(1:k)
   error.models = c("lin", "log", "rob", "tree")
   error.types = c("rmse", "rmsle")
-  error <- data.frame(error.models, error.types, error.iterations)
+  #error <- array(0, dim = c(length(error.iterations), length(error.models), length(error.types)))
+  #error <- array(error.models, error.types, error.iterations)
+  error <- list('linRMSLE', 'locRMSLE', 'robRMSLE', 'treeRMSLE', 'linRMSE', 'locRMSE', 'robRMSE', 'treeRMSE')
   
+  for (i in 1:k){
   # train models
-  cat("Fold",k,"  \n")
-  trainIndex <- (folds!=k)
+  cat("Fold",i,"  \n")
+  trainIndex <- (folds!=i)
   models <- getModels(trainset[trainIndex,])
   
   # get predictions
   testIndex <- -trainIndex
   predictions <- getPredictions(trainset[testIndex,], models)
   errors <- getErrors(trainset[testIndex,],predictions)
-  
-  return(errors)
+
+  if(length(error$linRMSLE))
+  {
+    error$linRMSLE <- c(error$linRMSLE, errors$lin$rmsle)
+    error$locRMSLE <- c(error$locRMSLE, errors$loc$rmsle)
+    error$robRMSLE <- c(error$robRMSLE, errors$rob$rmsle)
+    error$treeRMSLE <- c(error$treeRMSLE, errors$tree$rmsle)
+    error$linRMSE <- c(error$linRMSE, errors$lin$rmse)
+    error$locRMSE <- c(error$locRMSE, errors$loc$rmse)
+    error$robRMSE <- c(error$robRMSE, errors$rob$rmse)
+    error$treeRMSE <- c(error$treeRMSE, errors$tree$rmse)
+  }
+  else
+  {
+    error$linRMSLE <- errors$lin$rmsle
+    error$locRMSLE <- errors$loc$rmsle
+    error$robRMSLE <- errors$rob$rmsle
+    error$treeRMSLE <- errors$tree$rmsle
+    error$linRMSE <- errors$lin$rmse
+    error$locRMSE <- errors$loc$rmse
+    error$robRMSE <- errors$rob$rmse
+    error$treeRMSE <- errors$tree$rmse
+  }  
+  }
+  return(error)
 }
 
 ## Combines all kinds of regression models for given trainset
@@ -71,5 +98,6 @@ getErrors = function(testset, predictions){
                                 "rmse"=errors.robRMSE),
                      "tree"=list("rmsle"=errors.treeRMSLE,
                                  "rmse"=errors.treeRMSE))
+
   return(errorsList)
 }
