@@ -1,4 +1,4 @@
-#library(leaps)
+library(leaps)
 library(caret)
 library(mlbench)
 library(doMC)
@@ -26,7 +26,7 @@ correlationAnalysis = function(train){
 regsubsetAnalysis = function(train){
   out <- regsubsets(count ~ ., data=train, nvmax = 11)
   summary(out)
-  plot(out)
+  plot(out, scale = "Cp")
 }
 
 ## Stepwise Regression
