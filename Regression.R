@@ -27,16 +27,9 @@ robustReg = function(trainset, fam = binomial)
 }
 
 #drzewo regresji
-regTree = function (trainset, meth = "anova")
+regTree = function (trainset, cp, meth = "anova")
 {
   model <- rpart(count ~ ., method = meth, data = trainset)
-  
+  model <- prune(model, cp)
   return (model)
 }
-
-fit <- rpart(count ~ season + temp + holiday + workingday, method = "anova", data = train)
-#przycinanie - parametr cp
-cp <- 0.05
-pfit <- prune(fit, cp)
-plot(pfit, uniform = TRUE)
-printcp(pfit)
