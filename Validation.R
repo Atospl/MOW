@@ -8,45 +8,49 @@ crossValidate = function(trainset, k){
 
   # build error frame
   error.iterations = c(1:k)
-  error.models = c("lin", "log", "rob", "tree")
+  error.models = c("lin", "log", "rob", "tree", "mean")
   error.types = c("rmse", "rmsle")
   #error <- array(0, dim = c(length(error.iterations), length(error.models), length(error.types)))
   #error <- array(error.models, error.types, error.iterations)
-  error <- list('linRMSLE', 'locRMSLE', 'robRMSLE', 'treeRMSLE', 'linRMSE', 'locRMSE', 'robRMSE', 'treeRMSE')
+  error <- list('linRMSLE', 'locRMSLE', 'robRMSLE', 'treeRMSLE', 'meanRMSLE', 'linRMSE', 'locRMSE', 'robRMSE', 'treeRMSE', 'meanRMSE')
   
   for (i in 1:k){
-  # train models
-  cat("Fold",i,"  \n")
-  trainIndex <- (folds!=i)
-  models <- getModels(trainset[trainIndex,])
+    # train models
+    cat("Fold",i,"  \n")
+    trainIndex <- (folds!=i)
+    models <- getModels(trainset[trainIndex,])
+    
+    # get predictions
+    testIndex <- -trainIndex
+    predictions <- getPredictions(trainset[testIndex,], models)
+    errors <- getErrors(trainset[testIndex,],predictions)
   
-  # get predictions
-  testIndex <- -trainIndex
-  predictions <- getPredictions(trainset[testIndex,], models)
-  errors <- getErrors(trainset[testIndex,],predictions)
-
-  if(length(error$linRMSLE))
-  {
-    error$linRMSLE <- c(error$linRMSLE, errors$lin$rmsle)
-    error$locRMSLE <- c(error$locRMSLE, errors$loc$rmsle)
-    error$robRMSLE <- c(error$robRMSLE, errors$rob$rmsle)
-    error$treeRMSLE <- c(error$treeRMSLE, errors$tree$rmsle)
-    error$linRMSE <- c(error$linRMSE, errors$lin$rmse)
-    error$locRMSE <- c(error$locRMSE, errors$loc$rmse)
-    error$robRMSE <- c(error$robRMSE, errors$rob$rmse)
-    error$treeRMSE <- c(error$treeRMSE, errors$tree$rmse)
-  }
-  else
-  {
-    error$linRMSLE <- errors$lin$rmsle
-    error$locRMSLE <- errors$loc$rmsle
-    error$robRMSLE <- errors$rob$rmsle
-    error$treeRMSLE <- errors$tree$rmsle
-    error$linRMSE <- errors$lin$rmse
-    error$locRMSE <- errors$loc$rmse
-    error$robRMSE <- errors$rob$rmse
-    error$treeRMSE <- errors$tree$rmse
-  }  
+    if(length(error$linRMSLE))
+    {
+      error$linRMSLE <- c(error$linRMSLE, errors$lin$rmsle)
+      error$locRMSLE <- c(error$locRMSLE, errors$loc$rmsle)
+      error$robRMSLE <- c(error$robRMSLE, errors$rob$rmsle)
+      error$treeRMSLE <- c(error$treeRMSLE, errors$tree$rmsle)
+      error$meanRMSLE <- c(error$meanRMSLE, errors$mean$rmsle)
+      error$linRMSE <- c(error$linRMSE, errors$lin$rmse)
+      error$locRMSE <- c(error$locRMSE, errors$loc$rmse)
+      error$robRMSE <- c(error$robRMSE, errors$rob$rmse)
+      error$treeRMSE <- c(error$treeRMSE, errors$tree$rmse)
+      error$meanRMSE <- c(error$meanRMSE, errors$mean$rmse)
+    }
+    else
+    {
+      error$linRMSLE <- errors$lin$rmsle
+      error$locRMSLE <- errors$loc$rmsle
+      error$robRMSLE <- errors$rob$rmsle
+      error$treeRMSLE <- errors$tree$rmsle
+      error$meanRMSLE <- errors$mean$rmsle
+      error$linRMSE <- errors$lin$rmse
+      error$locRMSE <- errors$loc$rmse
+      error$robRMSE <- errors$rob$rmse
+      error$treeRMSE <- errors$tree$rmse
+      error$meanRMSE <- errors$mean$rmse
+    }  
   }
   return(error)
 }
@@ -80,15 +84,20 @@ getPredictions = function(testset, models){
 }
 
 getErrors = function(testset, predictions){
+  meanPred <- meanPredictions(predictions)
+  
   errors.linRMSLE <- rmsle(testset$count, predictions$lin)
   errors.locRMSLE <- rmsle(testset$count, predictions$loc)
   errors.robRMSLE <- rmsle(testset$count, predictions$rob)
   errors.treeRMSLE <- rmsle(testset$count, predictions$tree)
+  errors.meanRMSLE <- rmsle(testset$count, meanPred)
   
   errors.linRMSE <- rmse(testset$count, predictions$lin) 
   errors.locRMSE <- rmse(testset$count, predictions$loc)
   errors.robRMSE <- rmse(testset$count, predictions$rob)
-  errors.treeRMSE <- rmse(testset$count, predictions$tree)    
+  errors.treeRMSE <- rmse(testset$count, predictions$tree)  
+  errors.meanRMSE <- rmse(testset$count, meanPred)
+  
 
   errorsList <- list("lin"=list("rmsle"=errors.linRMSLE,
                                 "rmse"=errors.linRMSE),
@@ -97,7 +106,10 @@ getErrors = function(testset, predictions){
                      "rob"=list("rmsle"=errors.robRMSLE,
                                 "rmse"=errors.robRMSE),
                      "tree"=list("rmsle"=errors.treeRMSLE,
-                                 "rmse"=errors.treeRMSE))
+                                 "rmse"=errors.treeRMSE),
+                     "mean"=list("rmsle"=errors.meanRMSLE,
+                                 "rmse"=errors.meanRMSE)
+                     )
 
   return(errorsList)
 }
