@@ -13,7 +13,7 @@ addDayAttr=function(trainset) {
 
 ## Adds attribute containing hour of the day
 addHourAttr = function(trainset) {
-    trainset$hours <- hour(train$datetime)
+    trainset$hours <- hour(trainset$datetime)
     return(trainset)
 }
 
