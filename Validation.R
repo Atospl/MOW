@@ -101,3 +101,33 @@ getErrors = function(testset, predictions){
 
   return(errorsList)
 }
+
+meanPredictions = function(predicions)
+{
+  meanPredictions <- c()
+  
+  for(i in 1:length(predictions[[1]]))
+  {
+    pred <- c()
+    for(j in 1:length(predictions))
+    {
+      pred <- c(pred, predictions[[j]][i])
+    }
+    meanPredictions <- c(meanPredictions, mean(pred))
+  }
+  return(meanPredictions)
+}
+
+predictTestset = function (trainset, testset)
+{
+  preprocessedTrainset <- prepareDataset(trainset)
+  models <- getModels(preprocessedTrainset)
+  preprocessedTestset <- prepareDataset(testset, FALSE)
+  predictions <- getPredictions(preprocessedTestset, models)
+  
+  meanPred <- meanPredictions(predictions)
+  
+  data <- matrix(c(testset$datetime, meanPred), nrow = length(meanPred), ncol = 2)
+  
+  return (data)
+}

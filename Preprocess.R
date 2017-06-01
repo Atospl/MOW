@@ -45,11 +45,13 @@ removeOutliers = function(trainset) {
 }
 
 ## Invokes all functions connected with attributes preparation
-prepareDataset = function(trainset) {
+prepareDataset = function(trainset, training = TRUE) {
   trainset <- addDayAttr(trainset)
   trainset <- addHourAttr(trainset)
   trainset <- addWorkWayAttribute(trainset)
-  trainset <- removeOutliers(trainset)
+  if(training)
+    trainset <- removeOutliers(trainset)
+  
   trainset <- subset(trainset, 
 
                            select=c('onwaytowork', 'hours', "weekdays",
