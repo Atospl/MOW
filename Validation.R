@@ -68,7 +68,7 @@ crossValidate = function(trainset, k){
 getModels = function(trainset){
   
   linearModel <- linearReg(trainset)
-  localModel <- localReg(count ~ humidity + hours + atemp, trainset)
+  localModel <- localReg, trainset)
   robustModel <- robustReg(trainset)
   treeModel <- regTree(trainset)
   neuralModel <- trainNN(trainset, 40)
@@ -158,4 +158,9 @@ predictTestset = function (trainset, testset)
   data <- matrix(c(testset$datetime, meanPred), nrow = length(meanPred), ncol = 2)
   
   return (data)
+}
+
+savePredictionsCSV = function (data, filename)
+{
+  write.table(data, filename, quote = FALSE, row.names = FALSE, col.names = c("datetime", "count"), sep = ',')
 }
