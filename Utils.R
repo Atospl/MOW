@@ -12,3 +12,8 @@ workingTrain <- train[which(train$workingday == 1)]
 ## plot for count vs hour of day
 plot2 <- ggplot(workingTrain, aes(x = hour(datetime), y = count), xaxp=c(0:23, 1)) + geom_point() + labs(x = "Hour of day", y="Count") + geom_smooth() + scale_x_continuous(breaks=c(0:23))
 
+## Switch language in non-english systems for proper weekdays calculation
+Sys.setlocale("LC_TIME", "C")
+
+## all columns for training
+allColumns <- c("onwaytowork", "hours", "weekdays", "windspeed", "humidity", "atemp", "temp", "weather", "workingday", "holiday", "season")
