@@ -50,13 +50,21 @@ prepareDataset = function(trainset, training = TRUE) {
   trainset <- addHourAttr(trainset)
   trainset <- addWorkWayAttribute(trainset)
   if(training)
+  {
     trainset <- removeOutliers(trainset)
-  
-  trainset <- subset(trainset, 
-
-                           select=c('onwaytowork', 'hours', "weekdays",
-                                    'count', 'windspeed', 
-                                    'humidity', 'atemp', 'temp', 'weather', 
-                                    'workingday', 'holiday', 'season'))
+    trainset <- subset(trainset, 
+                             select=c('onwaytowork', 'hours', "weekdays",
+                                      'count', 'windspeed', 
+                                      'humidity', 'atemp', 'temp', 'weather', 
+                                      'workingday', 'holiday', 'season'))
+  }
+  else
+  {
+    trainset <- subset(trainset, 
+                       select=c('onwaytowork', 'hours', "weekdays",
+                                'windspeed', 
+                                'humidity', 'atemp', 'temp', 'weather', 
+                                'workingday', 'holiday', 'season'))
+  }
   return(trainset)
 }

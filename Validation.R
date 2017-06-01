@@ -68,7 +68,7 @@ crossValidate = function(trainset, k){
 getModels = function(trainset){
   
   linearModel <- linearReg(trainset)
-  localModel <- localReg, trainset)
+  localModel <- localReg(trainset)
   robustModel <- robustReg(trainset)
   treeModel <- regTree(trainset)
   neuralModel <- trainNN(trainset, 40)
