@@ -68,7 +68,7 @@ crossValidate = function(trainset, k){
 getModels = function(trainset){
   
   linearModel <- linearReg(trainset)
-  localModel <- localReg(trainset)
+  localModel <- localReg(count ~ humidity + hours + atemp, trainset)
   robustModel <- robustReg(trainset)
   treeModel <- regTree(trainset)
   neuralModel <- trainNN(trainset, 40)
@@ -151,7 +151,9 @@ predictTestset = function (trainset, testset)
   preprocessedTrainset <- prepareDataset(trainset)
   models <- getModels(preprocessedTrainset)
   preprocessedTestset <- prepareDataset(testset, FALSE)
-  predictions <- getPredictions(preprocessedTestset, models)
+  #NN prediction
+  neuralP <- predict(models$neural, newdata=preprocessedTestset)*range(preprocessedTrainset$count)[2]
+  predictions <- combinePredictions(preprocessedTestset, models, neuralP)
   
   meanPred <- meanPredictions(predictions)
   
