@@ -27,6 +27,7 @@ regsubsetAnalysis = function(train){
   out <- regsubsets(count ~ ., data=train, nvmax = 11)
   summary(out)
   plot(out, scale = "Cp")
+  return (out)
 }
 
 ## Stepwise Regression
