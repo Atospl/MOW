@@ -27,7 +27,8 @@ crossValidate = function(trainset, k){
     neuralP <- predict(models$neural, newdata=trainset[testIndex,])*range(trainset$count)[2]
     predictions <- combinePredictions(trainset[testIndex,], models, neuralP)
     errors <- getErrors(trainset[testIndex,],predictions)
-  
+    plotPredictions(trainset[testIndex,], predictions)
+    
     if(length(error$linRMSLE))
     {
       error$linRMSLE <- c(error$linRMSLE, errors$lin$rmsle)
@@ -60,7 +61,6 @@ crossValidate = function(trainset, k){
       error$meanRMSE <- errors$mean$rmse
     }  
   }
-  plotPredictions(trainset[testIndex,], predictions)
   return(error)
 }
 
@@ -71,7 +71,7 @@ getModels = function(trainset){
   localModel <- localReg(count ~ humidity + hours + atemp, trainset)
   robustModel <- robustReg(trainset)
   treeModel <- regTree(trainset)
-  neuralModel <- trainNN(trainset, 40)
+  neuralModel <- trainNN(trainset, 1)
     
   modelsList <- list("lin" = linearModel, "loc" = localModel, 
                      "rob" = robustModel, "tree" = treeModel,
