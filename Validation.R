@@ -11,10 +11,10 @@ crossValidate = function(trainset, k){
   error.iterations = c(1:k)
   error.models = c("lin", "log", "rob", "tree", "mean")
   error.types = c("rmse", "rmsle")
-  #error <- array(0, dim = c(length(error.iterations), length(error.models), length(error.types)))
-  #error <- array(error.models, error.types, error.iterations)
-  error <- list('linRMSLE', 'locRMSLE', 'robRMSLE', 'treeRMSLE', 'meanRMSLE', 'linRMSE', 'locRMSE', 'robRMSE', 'treeRMSE', 'meanRMSE')
-  
+  error <- list('linRMSLE', 'locRMSLE', 'robRMSLE', 
+                'treeRMSLE', 'meanRMSLE', 'linRMSE', 
+                'locRMSE', 'robRMSE', 'treeRMSE', 
+                'meanRMSE')
   for (i in 1:k){
     # train models
     cat("Fold",i,"  \n")
@@ -26,7 +26,6 @@ crossValidate = function(trainset, k){
     # add neural network prediction
     neuralP <- predict(models$neural, newdata=trainset[testIndex,])*range(trainset$count)[2]
     predictions <- combinePredictions(trainset[testIndex,], models, neuralP)
-    
     errors <- getErrors(trainset[testIndex,],predictions)
   
     if(length(error$linRMSLE))
@@ -61,6 +60,7 @@ crossValidate = function(trainset, k){
       error$meanRMSE <- errors$mean$rmse
     }  
   }
+  plotPredictions(trainset[testIndex,], predictions)
   return(error)
 }
 
@@ -165,4 +165,15 @@ predictTestset = function (trainset, testset)
 savePredictionsCSV = function (data, filename)
 {
   write.table(data, filename, quote = FALSE, row.names = FALSE, col.names = c("datetime", "count"), sep = ',')
+}
+
+plotPredictions = function(testset, predictions, xvar="hours") {
+    print(ggplot(testset) + 
+    geom_smooth(aes(testset[xvar], testset["count"], color="Trainset:Count")) +
+    geom_smooth(aes(testset[xvar], predictions$lin, color="Lin")) +
+    geom_smooth(aes(testset[xvar], predictions$loc, color="Loc")) +
+    geom_smooth(aes(testset[xvar], predictions$rob, color="Rob")) +
+    geom_smooth(aes(testset[xvar], predictions$tree, color="Tree")) +
+    geom_smooth(aes(testset[xvar], predictions$neural, color="Neural")) +
+    labs(x = xvar, y="Count"))
 }
