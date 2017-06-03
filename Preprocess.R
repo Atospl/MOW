@@ -53,10 +53,10 @@ prepareDataset = function(trainset, training = TRUE) {
   {
     trainset <- removeOutliers(trainset)
     trainset <- subset(trainset, 
-                             select=c('onwaytowork', 'hours', "weekdays",
-                                      'count', 'windspeed', 
-                                      'humidity', 'atemp', 'temp', 'weather', 
-                                      'workingday', 'holiday', 'season'))
+                             select=c('onwaytowork', 'humidity', 'hours', #"weekdays",
+                                      'count'))#, 'windspeed', 
+                                      # 'atemp', 'temp', 'weather', 
+                                      #'workingday', 'holiday', 'season'))
   }
   else
   {
