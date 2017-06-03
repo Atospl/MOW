@@ -133,7 +133,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
        Przy wykorzystaniu pełnego zbioru atrybutów model liniowy dał następujące błędy w walidacji skośnej dla k = 5:
        RMSLE 1.151384
        RMLE 119.815
-        Wykorzystane w modelu współczynniki dla poszczególnych atrybutów widoczne są w tabeli \ref{tab:wspolczynnikiLin}/.
+        Wykorzystane w modelu współczynniki dla poszczególnych atrybutów widoczne są w tabeli \ref{tab:wspolczynnikiLin}.
         
             \begin{table}
                 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
@@ -154,6 +154,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
         Tabela \ref{tab:linModels} zawiera błędy dla wybranych modeli zwróconych przez algorytm \textit{Regsubset analisys}. Wyniki pokrywają się z klasyfikacją modeli podaną jako wynik jego działania. Dla modeli składających się z 6 i więcej atrybutów błąd maleje minimalnie. Dla modelu składającego się z 8 atrybutów otrzymujemy już taki sam błąd jak dla pełnego zestawu atrybutów.
         
         \begin{table}[h]
+        	\centering
             \begin{tabular}{|p{2cm}|p{8cm}|r|r|}
                 \hline
                 Liczba atrybutów & atrybuty & RMSLE & RMSE \\
@@ -213,7 +214,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
                 \hline
             \end{tabular}
             \caption{Błąd funkcji lm dla poszczególnych podzbiorów atrybutów zwróconych przez regsubset}
-            \ref{tab:linModels}
+            \label{tab:linModels}
         \end{table}
         
         
@@ -230,6 +231,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
         
         
         \begin{table}[h]
+        	\centering
             \begin{tabular}{|c|c|c|c|}
                 \hline
                 Degree & Span & RMSLE & RMSE \\
@@ -279,6 +281,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
         Wpływ doboru atrybutów na wyniki regresji lokalnej przedstawia tabela \ref{tab:loessAttr}. Najlepszy wynik osiągnięto dla dwóch atrybutów: \textit{hours} i \textit{temp}.
         
         \begin{table}
+        	\centering
             \begin{tabular}{|c|c|c|}
                 \hline 
                 atrybuty & RMSLE & RMSE \\ 
@@ -299,7 +302,8 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
    Regresja typu "robust" z M- lub MM-estymacją wykazuje zwiększoną odporność na zanieczyszczone dane trenujące, zawierające dużą liczbę wartości odstających. W przypadku 
    dostępnego zbioru treningowego nie było to dużym problemem, ponieważ w procesie preprocessingu usunięte zostały takie wartości, zaś ich ogólna liczba była niewielka.
    
-    \begin{table}   
+    \begin{table}
+    \centering  
    \begin{tabular}{|c|c|c|}
    \hline
    Sposób estymacji & RMSLE & RMSE \\
@@ -312,6 +316,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
    \caption{Wyniki w zależności od metody estymacji (średni błąd walidacji skrośnej dla k=5)}
     \end{table}
     \begin{table}
+    	\centering
             \begin{tabular}{|c|c|c|}
                 \hline
                 Funkcja psi & RMSLE & RMSE \\
@@ -335,6 +340,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
     Regresja z m-estymacją powoduje wygładzenie skokowych zmian wartości liczby wypożyczeń, co  szczególnie negatywnie odbija się dla danych pochodzących z dni roboczych (szczyt poranny i popołudniowy). Wobec tego, przeprowadzono porównanie błędu obliczonego z wykorzystaniem tej metody dla danych weekendowych oraz dla danych z dni roboczych oraz porównano je z inną metodą wyznaczania regresji
 
     \begin{table}
+    	\centering
         \begin{tabular}{|c|c|c|}
                 \hline
                 & Dni robocze & Weekendy \\
@@ -360,6 +366,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
 Po analizie wyjścia algorytmów selekcji atrybutów przeprowadzone zostało badanie algorytmu dla zbioru ograniczonego do 8 atrybutów - "hours"    "humidity"  "onwaytowork" "weather" "weekdays"  "season" "workingday"  "temp", po czym zbiór ten zmniejszano w kolejności od najmniej istotnego atrybutu wg. Algorytmu RFE
     
     \begin{table}
+    	\centering
         \begin{tabular}{|c|c|c|}
                 \hline
                 Liczba atrybutów & RMSLE & RMSE \\
@@ -390,6 +397,7 @@ Po analizie wyjścia algorytmów selekcji atrybutów przeprowadzone zostało bad
        Jako drzewo decyzyjne wykorzystano implementację z pakietu \texttt{rpart}. Na otrzymanym drzewie przeprowadzono przycinanie metodą \texttt{prune}.
        W tabeli \ref{tab:regtree1} przedstawiono wpływ współczynnika przycinania na otrzymane wyniki. Eksperyment przeprowadzono dla wykorzystania w drzewie analizy wariancji (\textit{anova}) oraz rozkładu Poissona (\textit{poissson}). Korzystniejsze wyniki były otrzymywane przy wykorzystaniu rozkładu Poissona.
         \begin{table}
+        	\centering
             \begin{tabular}{|c|c|c|c|}
                 \hline
                 Cp & Meth & RMSLE & RMSE \\
@@ -414,6 +422,7 @@ Po analizie wyjścia algorytmów selekcji atrybutów przeprowadzone zostało bad
         W tabeli \ref{tab:regtree2} przedstawiono wpływ liczby atrybutów na wynik regresji.
         
         \begin{table}
+        	\centering
             \begin{tabular}{|c|c|c|}
                 \hline
                 Liczba atrybutów & RMSLE & RMSE \\
@@ -446,6 +455,7 @@ Po analizie wyjścia algorytmów selekcji atrybutów przeprowadzone zostało bad
     warstwą ukrytą. W przypadku sieci neuronowej kluczowy był również wynik badania z wykorzystaniem zbioru testowego, ponieważ w przypadku walidacji
     skrośnej zachodziło niebezpieczeństwo zbytniego dopasowania do zbioru trenującego.
         \begin{table}
+        	\centering
             \begin{tabular}{|c|c|c|}
             \hline 
             Liczba neuronów & RMSLE & RMSE \\ 
@@ -469,6 +479,7 @@ Po analizie wyjścia algorytmów selekcji atrybutów przeprowadzone zostało bad
         Poniższe wyniki regresji na zbiorze trenującym dowodzą, iż algorytm sieci neuronowej wykazuje dużą przydatność do celów regresji.
         
         \begin{table}
+        	\centering
             \begin{tabular}{|c|c|}
             \hline 
             Liczba neuronów & Wynik na zbiorze testowym \\ 
