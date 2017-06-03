@@ -136,13 +136,22 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
         Wykorzystane w modelu współczynniki dla poszczególnych atrybutów widoczne są w tabeli \ref{tab:wspolczynnikiLin}.
         
             \begin{table}
-                \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
-                    \hline 
-                    (Intercept) & onwaytowork & hours & weekdays & windspeed & humidity & atemp & temp & weather & workingday & holiday & season \\ 
-                    \hline 
-                    34.7226629 & 233.2879647 & 8.3635308 & 1.2258257 & 0.3128109 & -2.3272347 & 5.0743702 & 1.2704038 & -2.7714344 & -34.6009805 & -1.8851859 & 20.1173451 \\ 
-                    \hline 
-                \end{tabular}
+            	\centering
+            	\begin{tabular}{|c|c|c|c|}
+            	\hline 
+            	(Intercept) & onwaytowork & hours & weekdays \\ 
+            	\hline 
+            	34.7226629 & 233.2879647 & 8.3635308 & 1.2258257 \\ 
+            	\hline 
+            	windspeed & humidity & atemp & temp \\ 
+            	\hline 
+            	0.3128109 & -2.3272347 & 5.0743702 & 1.2704038 \\ 
+            	\hline 
+            	weather & workingday & holiday & season \\ 
+            	\hline 
+            	-2.7714344 & -34.6009805 & -1.8851859 & 20.1173451 \\ 
+            	\hline 
+            	\end{tabular} 
                 \caption{Współczynniki w modelu liniowym}
                 \label{tab:wspolczynnikiLin}
         \end{table}  
