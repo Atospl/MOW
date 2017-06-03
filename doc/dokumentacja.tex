@@ -107,7 +107,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
     \subsection{Miary błędów}
     Dla każdego rodzaju walidacji z wyjątkiem walidacji na zbiorze testowym (przeprowadzanej za pomocą aplikacji Kaggle) obliczano dwie miary błędu:
     \begin{enumerate}
-        \item Pierwiastek z błęd średniokwadratowego logarytmicznego $$RMSLE = \sqrt{\frac{1}{n}\sum_{n}^{i=1}(log(p_i + 1) - log(a_i + 1))^2}$$
+        \item Pierwiastek z błędu średniokwadratowego logarytmicznego $$RMSLE = \sqrt{\frac{1}{n}\sum_{n}^{i=1}(log(p_i + 1) - log(a_i + 1))^2}$$
 
         \item Pierwiastek z błędu średniokwadratowego $$RMSE = \sqrt{\frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y_i})^2}$$
      \end{enumerate}
@@ -299,7 +299,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
         
    \subsection{Robust regression z M-estymacją}
    
-   Regresja typu "robust" z M- lub MM-estymacją wykazuje zwiększoną odporność na zanieczyszczone dane trenujące, zawierające dużą liczbę wartości odstających. W przypadku 
+   Regresja typu ''robust'' z M- lub MM-estymacją wykazuje zwiększoną odporność na zanieczyszczone dane trenujące, zawierające dużą liczbę wartości odstających. W przypadku 
    dostępnego zbioru treningowego nie było to dużym problemem, ponieważ w procesie preprocessingu usunięte zostały takie wartości, zaś ich ogólna liczba była niewielka.
    
     \begin{table}
