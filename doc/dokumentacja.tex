@@ -17,9 +17,32 @@
 \section{Wstęp}
 W ramach projektu zajęliśmy się tematem analitycznym dotyczącym regresji na zbiorze danych dokumentującym liczbę wypożyczeń rowerów miejskich.
  
+ Celem projektu było zapoznanie się z istniejącymi rozwiązaniami dotyczącymi algorytmów regresji, wykorzystanie ich na dostepnym zbiorze, przeprowadzenie prawidłowych badań tych algorytmów oraz ich dostosowanie w celu osiągnięcia jak najmniejszego błędu na dostępnym zbiorze danych testowych.
+ Celem projektu było również wykorzystanie algorytmów umożliwiających ocenę i selekcję atrybutów a także analiza potencjału wprowadzenia nowych atrybutów do zbioru na podstawie analizy istniejących oraz wiedzy pozyskanej ze zbioru.
 W ramach przeprowadzonych badań skorzystaliśmy z pięciu dostępnych w języku R algorytmów regresji: regresji liniowej, regresji lokalnej, robust regression z M-estymacją, drzewa regresji oraz regresji z wykorzystaniem algorytmu sieci neuronowej.
  
 Przeprowadzona analiza miała na zadaniu znalezienie najlepiej radzącego sobie z postawionym zadaniem algorytmu, jak i zbadaniem wpływu parametrów poszczególnych z nich na otrzymywany wynik.
+
+\section{Zbiór danych}
+
+W projekcie wykorzystano zbiór danych dostępny pod adresem \textit{https://www.kaggle.com/c/bike-sharing-demand/}. Zawiera on dane zebrane na przestrzeni dwóch lat dotyczące ilości wypożyczeń w systemie rowerów miejskich. Każda próbka to opis każdej godziny pracy systemu w ciągu dnia. Atrybuty zbioru to kolejno:
+\begin{itemize}
+	\item data \textit{datetime}
+	\item pora roku \textit{season}
+	\item czy dany dzień jest świętem \textit{holiday}
+	\item czy dany dzień jest dniem roboczym \textit{workingday}
+	\item pogoda - jedna z czterech wartości \textit{weather}
+	\item temperatura \textit{temp}
+	\item temperatura odczuwalna \textit{atemp}
+	\item wilgotność \textit{humidity}
+	\item prędkość wiatru \textit{windspeed}
+	\item liczba rozpoczetych wypożyczeń niezarejestrowanych użytkowników \textit{casual}
+	\item liczba rozpoczętych wypożyczeń przez zarejestrowanych użytkowników \textit{registered}
+	\item całkowita liczba wypożyczeń - atrybut ciągły podlegający pomiarowi błędu \textit{count}
+\end{itemize}
+
+W każdym miesiącu pierwszych 19 dni stanowią dane uczące zbioru. Celem przeprowadzanej regresji jest przewidzenie liczby wypożyczonych rowerów w każdej godzinie od dnia 20. każdego miesiąca, który stanowi zbiór danych testowych.
+
 \section{Wstępne przetwarzanie danych}
 Wykorzystane dane pochodzą z platformy Kaggle i są w formie, która nie wymagała uzupełnienia, ponieważ są one kompletne.
  
@@ -37,13 +60,13 @@ Motywacją dla wprowadzenia nowych atrybutów był fakt, iż charakter liczby wy
 
 \begin{figure}[!htb]
     \center
-    \scalebox{0.8}{\includegraphics[width=0.8\textwidth]{CountvsHourWorkDays}}
+    \scalebox{0.8}{\includegraphics[width=0.8\textwidth]{CountVsHourWorkDays}}
     \caption{Wypożyczenia w dni robocze}
 \end{figure}
 
 \begin{figure}[!htb]
     \center
-    \scalebox{0.8}{\includegraphics[width=0.8\textwidth]{CountvsHourNotWorking}}
+    \scalebox{0.8}{\includegraphics[width=0.8\textwidth]{CountVsHourNotWorking}}
     \caption{Wypożyczenia poza dniami roboczymi}
 \end{figure}
     
@@ -115,7 +138,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
     
     \subsection{Walidacja skrośna}
     Algorytmy badano wykorzystując algorytm k-krotnej walidacji skrośnej. Polega ona na podziale zbioru na K podzbiorów, a następnie wykonywaniu na nich 
-    walidacji, przy czym w każdym kroku jeden z K zbiorów pełni rolę zbioru testowego, zaś pozostałe pełnią role zbioru uczącego. Dla każdego algorytmu 
+    walidacji, przy czym w każdym kroku jeden z K zbiorów pełni rolę zbioru testowego, zaś pozostałe pełnią role zbioru uczącego. W przypadku $ K = N$, a zatem gdy zbiór uczący jest równy w każdym kroku całemu dostępnemu zbiorowi treningowemu z wyjątkiem jednej obserwacji, walidacja skrośna k-krotna staje się walidacją \textit{leave-one-out}. Umożliwia ona lepsze uniezależnienie wyników eksperymentu od zmiennych losowych. Dostępny zbiór treningowy okazał się jednak na tyle duży, iż zespół nie wykrył istotnych różnic w błędzie otrzymywanym podczas walidacji metodą leave-one-out oraz zwykłej walidacji skrośnej. Dla każdego algorytmu 
     badano średni błąd przy walidacji dla k=5.
     \subsection{Walidacja na zbiorze testowym}       
     Na stronie Kaggle wraz z treścią zadania i zbiorem trenującym udostępniony również został zbiór testowy, pozbawiony liczby wypożyczeń. 
@@ -343,7 +366,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
     \begin{figure}[!htb]
         \center
         \scalebox{0.8}{\includegraphics[width=0.8\textwidth]{robust1}}
-        \caption{dd}
+        \caption{Wyniki regresji w trakcie weekendu w porównaniu z innymi algorytmami}
     \end{figure}
     
     Regresja z m-estymacją powoduje wygładzenie skokowych zmian wartości liczby wypożyczeń, co  szczególnie negatywnie odbija się dla danych pochodzących z dni roboczych (szczyt poranny i popołudniowy). Wobec tego, przeprowadzono porównanie błędu obliczonego z wykorzystaniem tej metody dla danych weekendowych oraz dla danych z dni roboczych oraz porównano je z inną metodą wyznaczania regresji
@@ -361,7 +384,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
                 Linear RMSLE & 1.097582 & 1.265375 \\
                 \hline
         \end{tabular}
-        \caption{dd}
+        \caption{Porównanie wyników osiąganych przez algorytm w dni robocze oraz weekendy}
     \end{table}
     
     Podejście okazało się jednak błędne, ponieważ dla weekendów istniało zbyt mało danych, aby skoki wypożyczeń w godzinach popołudniowych nie uległy wygładzeniu przez algorytm.
@@ -369,7 +392,7 @@ Dla wykorzystywanego do uczenia zbioru zastosowano wstępną obróbkę, która o
     \begin{figure}[!htb]
         \center
         \scalebox{0.8}{\includegraphics[width=0.8\textwidth]{robust2}}
-        \caption{dd}
+        \caption{Wykres ukazujący wyniki algorytmu na zbiorze ograniczonym do dni roboczych w porównaniu z innymi algorytmami}
     \end{figure}
     
 Po analizie wyjścia algorytmów selekcji atrybutów przeprowadzone zostało badanie algorytmu dla zbioru ograniczonego do 8 atrybutów - "hours"    "humidity"  "onwaytowork" "weather" "weekdays"  "season" "workingday"  "temp", po czym zbiór ten zmniejszano w kolejności od najmniej istotnego atrybutu wg. Algorytmu RFE
@@ -505,6 +528,13 @@ Po analizie wyjścia algorytmów selekcji atrybutów przeprowadzone zostało bad
     
 
 \section{Wnioski}
+ \par W ramach przeprowadzonego projektu wykorzystano szereg popularnych algorytmów regresji. Zadanie oraz wykorzystany zbiór danych pozwoliły na zapoznanie się z właściwościami algorytmów, przeprowadzenie ich analizy oraz krytyki pod kątem istniejącego zbioru danych.
+ Korzystając z wiedzy pozyskanej na podstawie wstępnej analizy zbioru wyodrębniono nowe atrybuty na podstawie istniejących danych. Były one związane z godziną obserwacji, dniem tygodnia oraz określeniem, czy data i godzina obserwacji wskazują na godziny szczytu dni roboczych.
+ Pomimo stosunkowo niedużej ilości atrybutów, przed przystąpieniem do predykcji zapotrzebowania na rowery przystąpiono do analizy statystycznej atrybutów, wykorzystując zarówno proste metody statystyczne takie jak badanie macierzy kowariancji pod kątem wzajemnej zależności atrybutów, jak również algorytmy służące do określenia ich istotności takie jak algorytm stepwise regression, regsubset analysis oraz algorytm RFE. Wszystkie wymienione algorytmy zwróciły stosunkowo podobne wyniki poświadczając przydatność dla celów regresji wprowadzonych przez nas atrybutów. Kolejnym atutem wykorzystania algorytmów selekcji jest fakt, iż pozwoliły one określić pożądaną wielkość zbioru atrybutów, powyżej której przyrost ilości atrybutów nie skutkuje poprawą przydatności predykcyjnej modeli regresyjnych. Wyniki analiz zostały następnie potwierdzone w praktyce, czego świadectwem są zamieszczone w sprawozdaniu tabele.
+ \par W toku dalszych prac opracowane zostały metody badania i analizy algorytmów regresji. Zespół przygotował metody umożliwiające wykonanie badania algorytmów z wykorzystaniem walidacji skrośnej a także zwrócenia wyników działania algorytmu na zbiorze testowym celem załadowania ich do aplikacji Kaggle. Przebadano pięć dostępnych w języku R algorytmów regresji: regresję liniową, regresję lokalną, robust regression, drzewa regresji oraz regresję wykorzystującą sieć neuronową. W celu potencjalnego zmniejszenia błędu badano zarówno błąd każdego algorytmu jak i błąd średniej predykcji wszystkich algorytmów - podejście to nie przyniosło jednak rezultatów w postaci poprawienia predykcji. Po opracowaniu procedu badawczych przystąpiono do dostrajania parametrów algorytmów przy wykorzystaniu walidacji skrośnej. Dla wszystkich algorytmów sterowanie ich parametrami oraz ograniczanie zbioru atrybutów, na których działają, przyniosło poprawę wyników uzyskiwanych predykcji. Stosunkowo najlepsze wyniki dało badanie algorytmu regresji lokalnej, przy której błąd w zależności od ustawień parametrów algorytmu udało się zmniejszyć niemal dwukrotnie.
+ \par Badania pozwoliły na ocenę przydatności algorytmów do celów predykcyjnych na istniejącym zbiorze. Stosunkowo najgorsze wyniki otrzymano przy wykorzoystaniu regresji typu robust ("odpornej"), co może być związane z gwałtownym charakterem zmian liczby wypożyczeń w zależności od godziny dnia - wygładzanie predykcji metodą m-estymacji powoduje wówczas jedynie zwiększenie błędu. Algorytm ten wydaje się być również nieodpowiedni dla przedstawionego problemu ze względu na statystykę danych treningowych - nieomal pozbawionych wartości odstających, przy których algorytm ten miałby lepsze zastosowanie.
+ \par W wyniku walidacji skrośnej najlepsze wyniki osiągnięto przy zastosowaniu sieci neuronowej. Za tym podejściem kryła się jednak możliwość nadmiernego dopasowania do zbioru trenującego, a co za tym idzie - słabych wyników tego modelu na zbiorze trenującym, w przypadku gdyby ten różnił się istotnie od zbioru uczącego. Obawy te rozwiano badaniem algorytmu na zbiorze trenującym - uzyskał on najniższy błąd spośród wszystkich badanych algorytmów.
+ \par Zespół uważa, iż możliwa jest dalsza poprawa uzyskiwanych wyników. W tym celu należałoby przetestować kolejne metody regresji, takie jak ridge regression oraz regresja z wykorzystaniem metod głębokiego uczenia - wielowarstwowych sieci neuronowych. 
  
 \end{document}
  
