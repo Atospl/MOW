@@ -2,13 +2,14 @@ library(MASS)
 library(Metrics)
 library(rpart)
 
+#linear regression
 linearReg = function(trainset, fam = binomial){
   model <- lm(count ~ ., family = fam, data = trainset)
   return(model)
 }
 
 
-#local regression - wywala sie dla niektorych parametrow - np. holiday: NA/NaN/Inf in foreign function call (arg 2) 
+#local regression
 #localRegression(count ~ humidity + hours + atemp, pTrain) - działa
 localReg = function(formula, trainset, sp=0.75, deg=2)
 {

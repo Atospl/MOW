@@ -55,7 +55,6 @@ LVQImportanceAnalysis = function(train){
 }
 
 ## Random Forest analysis
-## TODO
 randomForestAnalysis = function(train){
   control <- rfeControl(functions=rfFuncs, method="cv", number=10)
   results <- rfe(train[,c("season", "holiday", "workingday", "weather", "temp", "atemp", "humidity",

@@ -79,6 +79,7 @@ getModels = function(trainset){
   return(modelsList)
 }
 
+## Predicts results for given testdata with a given model and combines them into a list
 combinePredictions = function(testset, models, neural){
   linPredict <- predict(models$lin, newdata=testset)
   locPredict <- predict(models$loc, newdata=testset)
@@ -95,6 +96,7 @@ combinePredictions = function(testset, models, neural){
   return(predictionsList)
 }
 
+## Computes error of given predictions and returns them as a list
 getErrors = function(testset, predictions){
   meanPred <- meanPredictions(predictions)
   
@@ -130,6 +132,7 @@ getErrors = function(testset, predictions){
   return(errorsList)
 }
 
+## returns mean value of given predictions
 meanPredictions = function(predictions)
 {
   meanPredictions <- c()
@@ -146,6 +149,8 @@ meanPredictions = function(predictions)
   return(meanPredictions)
 }
 
+## Returns matrix with predictions and actual count
+## Data is later used to save as CSV file and upload result to kaggle website
 predictTestset = function (trainset, testset)
 {
   preprocessedTrainset <- prepareDataset(trainset)
@@ -162,11 +167,13 @@ predictTestset = function (trainset, testset)
   return (data)
 }
 
+## Saves predictions as csv file
 savePredictionsCSV = function (data, filename)
 {
   write.table(data, filename, quote = FALSE, row.names = FALSE, col.names = c("datetime", "count"), sep = ',')
 }
 
+## Function plots returned predictions in a graph with given parameter - "hours" by default
 plotPredictions = function(testset, predictions, xvar="hours") {
     print(ggplot(testset) + 
     geom_smooth(aes(testset[xvar], testset["count"], color="Trainset:Count")) +
